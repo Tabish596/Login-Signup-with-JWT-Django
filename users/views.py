@@ -51,10 +51,7 @@ class LoginView(APIView):
         response.data = {
             'jwt': token
         }
-
-        return render(request, 'basic_app/userdetails.html', {'user': user})
-        """ return HttpResponse('hello') """
-        """ return response """
+        return response
         """ return HttpResponseRedirect(reverse('basic_app:details')) """
 
 
