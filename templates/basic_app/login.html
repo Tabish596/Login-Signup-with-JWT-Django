@@ -1,0 +1,32 @@
+{% extends 'basic_app/base.html' %}
+{% block title %}Login page{% endblock title %}
+{% block body %}
+    <div class="container my-3 text-center">
+        <h3 align='center'>Login here</h3>
+        <div class="card">
+            <form class='row g-3 my-5' action="{% url 'basic_app:login'%}" method="post" >
+        
+            <div class="mb-3 row">
+                <label for="email" class="col-sm-2 col-form-label">Email:</label>
+                <div class="col-sm-3">
+                    <input type="email" class="form-control" name = 'email' id="email">
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="password" class="col-sm-2 col-form-label">Password:</label>
+                <div class="col-sm-3">
+                    <input type="password" class="form-control" name = 'password' id="password">
+                </div>
+            </div>
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary">Login</button>
+            </div>
+        </form>
+        <div class="container">
+            <h6>New user?</h6>
+            <a href="{%url "basic_app:register"%}">Register here</a>
+        </div>
+        </div>
+        
+    </div>
+{% endblock body %}
