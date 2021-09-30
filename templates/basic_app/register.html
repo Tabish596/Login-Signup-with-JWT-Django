@@ -5,6 +5,7 @@
     <div class="container my-3">
         <h3 align='center'>Register here</h3>
         <form class='row g-3 my-5' action="{% url 'basic_app:register'%}" method="post" >
+            {% csrf_token %}
             <div class="mb-3 row">
                 <label for="name" class="col-sm-2 col-form-label">Name:</label>
                 <div class="col-sm-3">

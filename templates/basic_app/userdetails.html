@@ -8,7 +8,8 @@
   
         <ul class="nav navbar-nav ml-auto">
             <li class="nav-item">
-                <button onclick="makePOSTrequest()" class="navbar-brand mb-0 h1">Logout</button>
+                {% comment %} <button onclick="makePOSTrequest()" class="navbar-brand mb-0 h1">Logout</button> {% endcomment %}
+                <a href="/logout/">logout</a>
             </li>
         </ul>
     </nav>
@@ -98,17 +99,22 @@
     </div>
     
     <script>
+        const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
         function makeDELETErequest() {
             $.ajax({
                 url: '/userdetails',
                 type: 'DELETE',
+                headers: {'X-CSRFToken': csrftoken}
             });
         }
         function makePOSTrequest() {
+            
             $.ajax({
                 url: '/logout',
                 type: 'POST',
-            });
+                headers: {'X-CSRFToken': csrftoken}
+            })
+               
         }
     </script>
 {% endblock body %}
