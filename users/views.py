@@ -59,19 +59,16 @@ class Userview(View):
 
     def get_payload(self, request):
         token = request.COOKIES.get('jwt')
-        payload = jwt.decode(token, 'mykey', algorithms=['HS256'])
-        return payload
-
-    def get(self, request):
-        token = request.COOKIES.get('jwt')
-
         if not token:
-            raise AuthenticationFailed('Unauthenticated!')
+            raise AuthenticationFailed("Unauthenticated!")
         try:
             payload = jwt.decode(token, 'mykey', algorithms=['HS256'])
         except:
-            raise AuthenticationFailed('jwt expired signature error')
+            raise AuthenticationFailed("jwt expired signature error")
+        return payload
 
+    def get(self, request):
+        payload = self.get_payload(request)
         user = User.objects.filter(id=payload['id']).first()
         serializer = UserSerializer(user)
         return render(request, 'basic_app/userdetails.html', {'user': serializer.data})
