@@ -77,7 +77,7 @@ class Userview(View):
         return render(request, 'basic_app/userdetails.html', {'user': serializer.data})
 
     def post(self, request):
-        payload = self.get_payload()
+        payload = self.get_payload(request)
         user = User.objects.filter(id=payload['id']).first()
         serializer = UserSerializer(user, data=request.POST, partial=True)
         if serializer.is_valid():
@@ -86,7 +86,7 @@ class Userview(View):
 
     def delete(self, request):
         response = HttpResponseRedirect("/login/")
-        payload = self.get_payload()
+        payload = self.get_payload(request)
         user = User.objects.get(id=payload['id'])
         user.delete()
         response.delete_cookie('jwt')
