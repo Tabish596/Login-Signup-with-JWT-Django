@@ -56,6 +56,12 @@ class LoginView(View):
 
 
 class Userview(View):
+
+    def get_payload(self, request):
+        token = request.COOKIES.get('jwt')
+        payload = jwt.decode(token, 'mykey', algorithms=['HS256'])
+        return payload
+
     def get(self, request):
         token = request.COOKIES.get('jwt')
 
@@ -71,8 +77,7 @@ class Userview(View):
         return render(request, 'basic_app/userdetails.html', {'user': serializer.data})
 
     def post(self, request):
-        token = request.COOKIES.get('jwt')
-        payload = jwt.decode(token, 'mykey', algorithms=['HS256'])
+        payload = self.get_payload()
         user = User.objects.filter(id=payload['id']).first()
         serializer = UserSerializer(user, data=request.POST, partial=True)
         if serializer.is_valid():
@@ -81,8 +86,7 @@ class Userview(View):
 
     def delete(self, request):
         response = HttpResponseRedirect("/login/")
-        token = request.COOKIES.get('jwt')
-        payload = jwt.decode(token, 'mykey', algorithms=['HS256'])
+        payload = self.get_payload()
         user = User.objects.get(id=payload['id'])
         user.delete()
         response.delete_cookie('jwt')
@@ -94,6 +98,5 @@ class Logout(View):
         if request.method == 'GET':
             response = HttpResponseRedirect("/login/")
             response.delete_cookie('jwt')
-            print(response)
             return response
         return redirect("/login/")
